@@ -1,6 +1,6 @@
 package main
 
-import "GLogger/logger"
+import "common/logger"
 
 var log = logger.InitLogger("./test.yml")
 
