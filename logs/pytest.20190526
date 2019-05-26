@@ -1,0 +1,3 @@
+{"level":"info","time":"2019-05-26T17:54:04.890+0800","linenum":"/Users/pyzhao/Desktop/github/GLogger/logger/logger.go:108","msg":"log 初始化成功","serviceName":"serviceName"}
+{"level":"info","time":"2019-05-26T17:54:04.891+0800","linenum":"/Users/pyzhao/Desktop/github/GLogger/main.go:8","msg":"test log","serviceName":"serviceName"}
+{"level":"warn","time":"2019-05-26T17:54:04.891+0800","linenum":"/Users/pyzhao/Desktop/github/GLogger/main.go:10","msg":"test log","serviceName":"serviceName"}

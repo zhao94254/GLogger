@@ -1,0 +1,7 @@
+appname: pytest
+
+logger:
+  log_dir: ./logs
+  days: 7
+  rotationtime: day
+

@@ -1,7 +1,11 @@
-package slog
+package logger
 
 import (
 	"fmt"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -40,8 +44,8 @@ func GetConfig(file string) ConfStruct {
 }
 
 
-func InitLogger() *zap.Logger {
-	conf := GetConfig("./conf/test.yml")
+func InitLogger(confpath string) *zap.Logger {
+	conf := GetConfig(confpath)
 
 	filename := filepath.Join(conf.Log.LogDir, conf.APPName)
 	var rtime  time.Duration
