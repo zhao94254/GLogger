@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+var Log *zap.Logger
 
 type ConfStruct struct {
 
@@ -44,7 +45,7 @@ func GetConfig(file string) ConfStruct {
 }
 
 
-func InitLogger(confpath string) *zap.Logger {
+func initLogger(confpath string) *zap.Logger {
 	conf := GetConfig(confpath)
 
 	filename := filepath.Join(conf.Log.LogDir, conf.APPName)
@@ -105,6 +106,28 @@ func InitLogger(confpath string) *zap.Logger {
 	// 构造日志
 	logger := zap.New(core, caller, development, filed)
 
-	logger.Info("log 初始化成功")
+	//logger.Info("log 初始化成功")
 	return logger
+}
+
+type KV map[string]interface{}
+
+func kvToZapField(kv KV) []zap.Field {
+	zf := make([]zap.Field,0, len(kv))
+	for k, v := range kv {
+		zf = append(zf, zap.Reflect(k, v))
+	}
+	return zf
+}
+
+func Debugln(kv KV, msg string)            { Log.Debug(msg, kvToZapField(kv)...) }
+func Infoln(kv KV, msg string)             { Log.Info(msg, kvToZapField(kv)...) }
+func Warnln(kv KV, msg string)             {Log.Warn(msg, kvToZapField(kv)...)}
+func Errorln(err error, kv KV, msg string) { Log.Error(msg, kvToZapField(kv)...) }
+func Fatalln(kv KV, msg string)            { Log.Fatal(msg, kvToZapField(kv)...) }
+
+
+
+func InitLogger(confpath string)  {
+	Log = initLogger(confpath)
 }
