@@ -1,0 +1,7 @@
+{"level":"info","time":"2019-06-29T20:29:27.510+0800","linenum":"/Users/pyzhao/Desktop/github/common/logging/logger.go:118","msg":"s","s":1}
+{"level":"info","time":"2019-06-29T20:33:56.596+0800","linenum":"/Users/pyzhao/sdk/go1.12.5/src/runtime/proc.go:200","msg":"s","s":1}
+{"level":"info","time":"2019-06-29T20:34:24.878+0800","linenum":"/Users/pyzhao/sdk/go1.12.5/src/runtime/asm_amd64.s:1337","msg":"s","s":1}
+{"level":"info","time":"2019-06-29T20:34:34.633+0800","linenum":"/Users/pyzhao/Desktop/github/common/logging/logger.go:124","msg":"s","s":1}
+{"level":"info","time":"2019-06-29T20:34:41.763+0800","linenum":"/Users/pyzhao/Desktop/github/common/main.go:20","msg":"s","s":1}
+{"level":"info","time":"2019-06-29T20:35:16.588+0800","linenum":"/Users/pyzhao/Desktop/github/common/main.go:20","msg":"s","serviceName":"serviceName","s":1}
+{"level":"info","time":"2019-06-29T20:39:57.153+0800","linenum":"/Users/pyzhao/Desktop/github/common/main.go:20","msg":"s","s":1}

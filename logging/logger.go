@@ -48,14 +48,13 @@ func initLogger(filename, seg string) *zap.Logger {
 	var rtime  time.Duration
 	var fm string
 	if seg == "hour" {
-		fm = ".%Y%m%d%H"
-
+		fm = ".%Y-%m-%d-%H"
 		rtime = time.Hour
 	} else if seg == "minute" {
-		fm = ".%Y%m%d%H%M"
+		fm = ".%Y-%m-%d-%H-%M"
 		rtime = time.Minute
 	} else{
-		fm = ".%Y%m%d"
+		fm = ".%Y-%m-%d"
 		rtime = time.Hour * 24
 	}
 
@@ -96,9 +95,9 @@ func initLogger(filename, seg string) *zap.Logger {
 	// 开启文件及行号
 	development := zap.Development()
 	// 设置初始化字段
-	filed := zap.Fields(zap.String("serviceName", "serviceName"))
+	//filed := zap.Fields(zap.String("serviceName", "serviceName"))
 	// 构造日志
-	logger := zap.New(core, caller, development, filed)
+	logger := zap.New(core, caller, development, zap.AddCallerSkip(1))
 
 	//logger.Info("log 初始化成功")
 	return logger
