@@ -44,7 +44,7 @@ func initLogger(filename string, conf map[string]string) *zap.Logger {
 		EncodeLevel:    zapcore.LowercaseLevelEncoder,  // 小写编码器
 		EncodeTime:     zapcore.ISO8601TimeEncoder,     // ISO8601 UTC 时间格式
 		EncodeDuration: zapcore.SecondsDurationEncoder, //
-		EncodeCaller:   zapcore.FullCallerEncoder,      // 全路径编码器
+		EncodeCaller:   zapcore.ShortCallerEncoder,      // 全路径编码器
 		EncodeName:     zapcore.FullNameEncoder,
 	}
 
@@ -77,23 +77,25 @@ func initLogger(filename string, conf map[string]string) *zap.Logger {
 }
 
 type KV map[string]interface{}
+type Conf map[string]string
 
-func kvToZapField(kv KV) []zap.Field {
-	zf := make([]zap.Field,0, len(kv))
-	for k, v := range kv {
-		zf = append(zf, zap.Reflect(k, v))
-	}
+func kvToZapField(kv KV) zap.Field {
+	//zf := make([]zap.Field,0, len(kv))
+	//for k, v := range kv {
+	//	zf = append(zf, zap.Reflect(k, v))
+	//}
+	zf := zap.Reflect("kv", kv)
 	return zf
 }
 
-func Debugln(kv KV, msg string)            { Log.Debug(msg, kvToZapField(kv)...) }
-func Infoln(kv KV, msg string)             { Log.Info(msg, kvToZapField(kv)...) }
-func Warnln(kv KV, msg string)             {Log.Warn(msg, kvToZapField(kv)...)}
-func Errorln(err error, kv KV, msg string) { Log.Error(msg, kvToZapField(kv)...) }
-func Fatalln(kv KV, msg string)            { Log.Fatal(msg, kvToZapField(kv)...) }
+func Debugln(kv KV, msg string)            { Log.Debug(msg, zap.Reflect("kv", kv)) }
+func Infoln(kv KV, msg string)             { Log.Info(msg, zap.Reflect("kv", kv)) }
+func Warnln(kv KV, msg string)             {Log.Warn(msg, zap.Reflect("kv", kv))}
+func Errorln(err error, kv KV, msg string) { Log.Error(msg, zap.Reflect("kv", kv), zap.Reflect("err", err)) }
+func Fatalln(kv KV, msg string)            { Log.Fatal(msg, zap.Reflect("kv", kv)) }
 
 
 
-func InitLogger(filename, seg string)  {
-	Log = initLogger(filename, seg )
+func InitLogger(filename string, conf map[string]string)  {
+	Log = initLogger(filename, conf)
 }
