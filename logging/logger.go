@@ -4,53 +4,21 @@ import (
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"os"
 	"time"
 )
 
 var Log *zap.Logger
 
-type ConfStruct struct {
-
-	APPName string `default:"app name"`
-
-	Log struct{
-		LogDir  string `yaml:"log_dir"`
-		LogFile string `yaml:"log_file"`
-		LogDays int `yaml:"days"`
-		Rotationtime string `yaml:"rotationtime"`
-	} `yaml:"logger"`
-}
-
-
-
-func Load(file string, c *ConfStruct) error {
-	buf, err := ioutil.ReadFile(file)
-	if err != nil {
-		return err
-	}
-	return yaml.Unmarshal(buf, &c)
-}
-
-func GetConfig(file string) ConfStruct {
-	c := ConfStruct{}
-	if err := Load(file, &c); err!=nil {
-		panic(err)
-	}
-	return c
-}
-
-
-func initLogger(filename, seg string) *zap.Logger {
-
+func initLogger(filename string, conf map[string]string) *zap.Logger {
+	// conf["rotation"] = hour,minute,day 日志切割级别
+	// conf["level"] = info, debug  日志输出级别
 	var rtime  time.Duration
 	var fm string
-	if seg == "hour" {
+	if conf["rotation"] == "hour" {
 		fm = ".%Y-%m-%d-%H"
 		rtime = time.Hour
-	} else if seg == "minute" {
+	} else if conf["rotation"] == "minute" {
 		fm = ".%Y-%m-%d-%H-%M"
 		rtime = time.Minute
 	} else{
@@ -82,7 +50,12 @@ func initLogger(filename, seg string) *zap.Logger {
 
 	// 设置日志级别
 	atomicLevel := zap.NewAtomicLevel()
-	atomicLevel.SetLevel(zap.InfoLevel)
+	if conf["level"] == "debug" {
+		atomicLevel.SetLevel(zap.DebugLevel)
+	} else {
+		atomicLevel.SetLevel(zap.InfoLevel)
+	}
+
 
 	core := zapcore.NewCore(
 		zapcore.NewJSONEncoder(encoderConfig),                                           // 编码器配置
